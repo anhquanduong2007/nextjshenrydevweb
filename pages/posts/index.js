@@ -31,7 +31,7 @@ const Posts = ({ posts }) => {
             {posts.map((post) => (
                 <Card key={post.id} style={{ margin: "1rem 0" }} className="shadow">
                     <Card.Body>
-                        <Card.Title>{post.title}</Card.Title>
+                        <Card.Title>{post.id} -- {post.title}</Card.Title>
                         <Card.Text>{post.body}</Card.Text>
                         <Link href={`/posts/${post.id}`} passHref>
                             <Card.Link>See More</Card.Link>
@@ -60,7 +60,7 @@ export const getStaticProps = async () => {
      * api nữa thì nó sẽ load nhanh hơn rất nhiều và nó cũng tốt cho cái việc SEO ý là chạy npm run build thì cái html của
      * cái trang posts này sẽ được tạo luôn rồi.
      */
-    const posts = await getPosts();
+    const posts = await getPosts(10);
     return {
         props: { posts }
     }

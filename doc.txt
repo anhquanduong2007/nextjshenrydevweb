@@ -1,0 +1,25 @@
+## Có câu hỏi như này ở bài số 2 
+- Bạn cho mình hỏi như bạn nói thì getstaticPath ban đầu sẽ đọc vô những id 1 2 3 4 5 trước tiên, sau đó 
+nếu click vô id = 6 nó sẽ render một page tạm trong lần đầu tiên, sau đó sẽ ko render ra page tạm này 
+nữa mà sẽ lưu luôn vô trong paths, mà sao thấy video nếu bạn cứ ctrl + F5 nó lại load page tạm tiếp, 
+theo mình hiểu là nó sẽ không load lại page tạm trong những lần click tiếp theo vào id 6 chứ nhỉ, 
+thank bạn vì video hữu ích
+- Lời giải thích này: Mk cũng nghĩ như bạn v, nhưng sau khi đọc docs của nó xong thì mình nghĩ khác chút 
+và đoán là ban đầu nó chỉ lấy 5 posts ( 1 --> 5 ) để generate thành HTML tĩnh rồi lưu vào trong cache 
+của thằng Next.js thay vì lấy hẵn 10 posts ( 1 --> 10 ) thì như vậy lúc npm run build khá tốn tgian 
+( có thể lên đến cả 100 posts ). Nên mỗi khi user click vào post thứ 6 chẳng hạn thì nó sẽ thực hiện 
+request mới lấy post thứ 6 đó về r nhét chung vào cache của 5 posts trước và ghi nhớ post thứ 6 đó là 
+"pre-rendered page". Việc bạn F5 lại thấy cái Spinner thì do lúc b nhấn F5 thì cũng đồng nghĩa với việc 
+xóa khỏi cache cùng với trạng thái "pre-rendered page" của các post từ thứ 6 trở đi nên Next nó hiểu là, 
+"À, có đứa nào F5 lại trang kìa, clear cache đi và show cái Spinner ngay để chuẩn bị request cho post 
+thứ 6", việc F5 lại trang sẽ tốn thời gian hơn việc b click vào post để móc từ trong cache ra 
+(post 1 --> 5 ) để chuyển trang nên nó mới hiện cái Spinner vậy. Mình thấy lúc click vào  post 1 or post
+6 thì tgian để tải trang cũng như nhau nên mình nghĩ cái này sinh ra để giảm thời gian lúc b gõ 
+npm run build thoy, "Tưởng tượng nếu bạn có trang tin tức với 1 tỷ bài post ( như baomoi.com ) thì 
+lúc run build để lưu từng bài post vào cache nó sẽ khủng khiếp ntn, chưa kể trong quá trình build mà 
+lỗi thì build lại nữa =)))"
+
+
+** Câu hỏi 2: mk thắc mắc sao cái Spinner kia chỉ xuất hiện khi mk nhấn F5 thôi còn lúc click vào post để chuyển trang thì nó ko hiện :')
+** Câu tl: F5 coi như ta khởi động lại Next.js server rồi, còn click vào post thì Next đã kịp render 
+xong trang đó trước khi Spinner kịp hiện ra

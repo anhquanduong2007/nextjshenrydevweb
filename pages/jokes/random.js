@@ -23,6 +23,17 @@ export const getServerSideProps = async () => {
      * Dữ liệu phụ thuộc vào mỗi request, nhưng mà vẫn tạo ra HTML tĩnh cho fron-end, nên vẫn tốt cho SEO 
      */
     const joke = await getRandomJoke();
+    if (!joke) {
+        // return {
+        //     notFound: true -> 404 page
+        // }
+        return {
+            redirect: {
+                destination: '/posts', // joke đang sập muốn người dùng về posts
+                parmanet: false
+            }
+        }
+    }
     return {
         props: { joke }
     }
